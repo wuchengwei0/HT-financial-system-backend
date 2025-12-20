@@ -1,7 +1,7 @@
 # SpringBoot Base
 
 #### 介绍
-SpringBoot脚手架
+SpringBoot脚手架(基本项目启动、全局异常、跨域、统一封装请求结果)
 
 #### 软件架构
 软件架构说明
