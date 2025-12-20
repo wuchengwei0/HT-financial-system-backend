@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: scaffold-demo
+
+# Knife4j配置 - 最简单的配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enable-swagger-models: true
+    enable-version: true
+    enable-author: true
