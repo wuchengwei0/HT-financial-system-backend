@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @TableName("asset")
@@ -34,6 +37,7 @@ public class Asset {
     private Long marketValue;
     
     @Schema(description = "所属行业", example = "科技")
+    @JsonProperty("assetCategory")  // TODO 123
     private String industry;
     
     @Schema(description = "持仓数量", example = "15000")
@@ -77,5 +81,9 @@ public class Asset {
     @Schema(description = "最大回撤", example = "15.2")
     @TableField("maxDrawdown")
     private Double maxDrawdown;
+    
+    @Schema(description = "记录日期", example = "2024-01-01")
+    @TableField("recordDate")
+    private Date recordDate;
 }
 

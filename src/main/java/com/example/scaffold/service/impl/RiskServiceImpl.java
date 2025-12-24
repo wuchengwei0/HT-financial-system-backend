@@ -9,8 +9,8 @@ import com.example.scaffold.service.RiskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +43,11 @@ public class RiskServiceImpl implements RiskService {
         }
 
         // 获取当前精确时间
-        LocalDate now = LocalDate.now();
-        LocalDate startDate = LocalDate.now().minusDays(days);
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.DAY_OF_MONTH, -days);
+        Date startDate = calendar.getTime();
         QueryWrapper<RiskDrawdown> wrapper = new QueryWrapper<>();
         wrapper.ge("date", startDate);
         wrapper.le("date", now);

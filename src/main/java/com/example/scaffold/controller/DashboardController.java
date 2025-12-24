@@ -25,7 +25,7 @@ public class DashboardController {
     
     @Operation(
             summary = "获取仪表板核心指标",
-            description = "获取数据看板的核心指标数据"
+            description = "获取数据看板的核心指标数据，支持按日期范围查询"
     )
     @ApiResponses({
             @ApiResponse(
@@ -35,13 +35,17 @@ public class DashboardController {
             )
     })
     @GetMapping("/metrics")
-    public Result<Map<String, Object>> getMetrics() {
-        return Result.success(dashboardService.getMetrics());
+    public Result<Map<String, Object>> getMetrics(
+            @Parameter(description = "开始日期（yyyy-MM-dd）", example = "2024-01-01")
+            @RequestParam(required = false) String dateFrom,
+            @Parameter(description = "结束日期（yyyy-MM-dd）", example = "2024-12-31")
+            @RequestParam(required = false) String dateTo) {
+        return Result.success(dashboardService.getMetrics(dateFrom, dateTo));
     }
     
     @Operation(
             summary = "获取资产分布数据",
-            description = "获取资产分布数据，用于饼图展示"
+            description = "获取资产分布数据，用于饼图展示，支持按日期范围查询"
     )
     @ApiResponses({
             @ApiResponse(
@@ -51,13 +55,17 @@ public class DashboardController {
             )
     })
     @GetMapping("/allocation")
-    public Result<List<Map<String, Object>>> getAllocation() {
-        return Result.success(dashboardService.getAllocation());
+    public Result<List<Map<String, Object>>> getAllocation(
+            @Parameter(description = "开始日期（yyyy-MM-dd）", example = "2024-01-01")
+            @RequestParam(required = false) String dateFrom,
+            @Parameter(description = "结束日期（yyyy-MM-dd）", example = "2024-12-31")
+            @RequestParam(required = false) String dateTo) {
+        return Result.success(dashboardService.getAllocation(dateFrom, dateTo));
     }
     
     @Operation(
             summary = "获取业绩趋势数据",
-            description = "获取业绩趋势数据，支持不同时间范围"
+            description = "获取业绩趋势数据，支持按日期范围查询"
     )
     @ApiResponses({
             @ApiResponse(
@@ -68,9 +76,11 @@ public class DashboardController {
     })
     @GetMapping("/performance")
     public Result<List<Map<String, Object>>> getPerformance(
-            @Parameter(description = "时间范围", example = "1y")
-            @RequestParam(defaultValue = "1y") String range) {
-        return Result.success(dashboardService.getPerformance(range));
+            @Parameter(description = "开始日期（yyyy-MM-dd）", example = "2024-01-01")
+            @RequestParam(required = false) String dateFrom,
+            @Parameter(description = "结束日期（yyyy-MM-dd）", example = "2024-12-31")
+            @RequestParam(required = false) String dateTo) {
+        return Result.success(dashboardService.getPerformance(dateFrom, dateTo));
     }
 }
 

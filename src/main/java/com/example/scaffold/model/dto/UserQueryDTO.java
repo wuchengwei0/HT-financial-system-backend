@@ -1,5 +1,6 @@
 package com.example.scaffold.model.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -23,11 +24,14 @@ public class UserQueryDTO {
     private Integer status;
 
     @Schema(description = "部门ID", example = "1001")
+    @TableField("deptId")
     private Long deptId;
 
     @Schema(description = "创建时间开始", example = "2024-01-01T00:00:00")
+    @TableField("createTimeStart")
     private String createTimeStart;
 
     @Schema(description = "创建时间结束", example = "2024-12-31T23:59:59")
+    @TableField("createTimeEnd")
     private String createTimeEnd;
 }

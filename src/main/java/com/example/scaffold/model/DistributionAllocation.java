@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName("distribution_allocation")
 @Schema(description = "资产配置实体")
@@ -24,5 +26,9 @@ public class DistributionAllocation {
     
     @Schema(description = "颜色代码", example = "#1890ff")
     private String color;
+    
+    @Schema(description = "记录日期", example = "2024-01-01")
+    @TableField("recordDate")
+    private Date recordDate;
 }
 

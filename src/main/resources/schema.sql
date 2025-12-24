@@ -33,11 +33,13 @@ CREATE TABLE IF NOT EXISTS asset(
     beta DOUBLE COMMENT '贝塔系数',
     sharpeRatio DOUBLE COMMENT '夏普比率',
     maxDrawdown DOUBLE COMMENT '最大回撤',
+    recordDate DATE COMMENT '记录日期',
     createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updateTime DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (id),
     INDEX idx_code (code),
     INDEX idx_industry (industry),
+    INDEX idx_record_date (recordDate),
     INDEX idx_update_time (updateTime)
 );
 
@@ -58,12 +60,12 @@ CREATE TABLE IF NOT EXISTS risk_event(
 -- 投资组合趋势表
 CREATE TABLE IF NOT EXISTS portfolio_trend(
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
-    date VARCHAR(20) NOT NULL COMMENT '日期（YYYY-MM格式）',
+    recordDate DATE NOT NULL COMMENT '记录日期',
     portfolio DOUBLE COMMENT '投资组合价值',
     benchmark DOUBLE COMMENT '基准价值',
     volume BIGINT COMMENT '成交量',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    INDEX idx_date1 (date)
+    INDEX idx_record_date1 (recordDate)
 );
 
 -- 月度收益表
@@ -83,8 +85,10 @@ CREATE TABLE IF NOT EXISTS distribution_allocation(
     category VARCHAR(100) NOT NULL COMMENT '资产类别',
     `value` DOUBLE COMMENT '配置比例',
     color VARCHAR(20) COMMENT '颜色代码',
+    recordDate DATE COMMENT '记录日期',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    INDEX idx_category (category)
+    INDEX idx_category (category),
+    INDEX idx_record_date2 (recordDate)
 );
 
 -- 历史配置表

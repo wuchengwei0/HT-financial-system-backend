@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -68,8 +68,8 @@ public class UserDTO {
     private String remark;
 
     @Schema(description = "创建时间", example = "2024-01-01T10:00:00", accessMode = Schema.AccessMode.READ_ONLY)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @Schema(description = "更新时间", example = "2024-01-01T10:00:00", accessMode = Schema.AccessMode.READ_ONLY)
-    private LocalDateTime updateTime;
+    private Date updateTime;
 }
