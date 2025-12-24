@@ -1,31 +1,23 @@
-# 1本地启动
-# 清理并编译
-mvn clean compile
+##########################RUN
 
-# 运行测试
-mvn test
+# dockerfile 和 jar 放到同级目录上
+# 1. 在包含 Dockerfile 和 financial-backend.jar 的目录中执行
+docker build -t financial-backend:latest .
 
-# 打包
-mvn clean package -DskipTests
-
-# 运行应用
-java -jar target/test.jar
-
-
-# 2 Docker运行
-# 1. 编译项目
-mvn clean package
-
-# 2. 构建Docker镜像
-docker build -t springboot-scaffold:1.0.0 .
-
-# 3. 运行容器
+# 2. 运行容器并设置开机自启动
+# docker run -d --name financial-app--restart=always -p 8080:8080 -e JAVA_OPTS="-Xmx1g -Xms512m" financial-backend:latest
 docker run -d \
+  --name financial-app \
+  --restart=always \
   -p 8080:8080 \
-  --name scaffold-app \
-  springboot-scaffold:1.0.0
+  financial-backend:latest
 
-# 或者使用docker-compose（创建docker-compose.yml文件）
+
+##########################Stop & Kill
+# 停止并删除容器
+docker rm -f financial-app
+# 删除指定镜像
+docker rmi financial-backend:latest
 
 
 ###########################################

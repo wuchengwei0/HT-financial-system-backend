@@ -1,17 +1,34 @@
-# 使用 OpenJDK 8 作为基础镜像
-FROM openjdk:8-jre-slim
+# 使用官方 OpenJDK 11 运行时作为基础镜像
+FROM openjdk:11-jre-slim
+
+# 设置元数据
+LABEL maintainer="your-email@example.com"
+LABEL app.name="financial-backend"
+LABEL app.version="1.0.0"
+
+# 设置时区（中国上海）
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制jar文件到容器中
-COPY target/test.jar app.jar
+# 复制 JAR 文件到容器中（假设 financial-backend.jar 与 Dockerfile 在同一目录）
+COPY financial-backend.jar /app/financial-backend.jar
 
-# 暴露端口
+# 创建应用用户（安全考虑）
+RUN groupadd -r appgroup && \
+    useradd -r -g appgroup -s /bin/false appuser && \
+    chown -R appuser:appgroup /app
+
+# 切换到非root用户
+USER appuser
+
+# 暴露应用端口（假设你的应用使用8080端口）
 EXPOSE 8080
 
-# 设置JVM参数
-ENV JAVA_OPTS="-Xmx512m -Xms256m -Duser.timezone=Asia/Shanghai"
+# 设置默认的 JVM 参数
+ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"
 
-# 容器启动命令
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+# 运行应用 - 使用 CMD 而不是 ENTRYPOINT 以便更容易覆盖参数
+CMD ["sh", "-c", "java $JAVA_OPTS -jar /app/financial-backend.jar"]

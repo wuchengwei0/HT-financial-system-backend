@@ -10,6 +10,10 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @Schema(description = "统一响应结果")
 public class Result<T> implements Serializable {
+    
+    @Schema(description = "是否成功", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
+    private boolean success;
+    
     @Schema(description = "响应码", requiredMode = Schema.RequiredMode.REQUIRED, example = "200")
     private Integer code;
 
@@ -30,6 +34,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>();
         result.setCode(ResultCode.SUCCESS.getCode());
         result.setMessage(ResultCode.SUCCESS.getMessage());
+        result.setSuccess(true);
         return result;
     }
 
@@ -38,6 +43,7 @@ public class Result<T> implements Serializable {
         result.setCode(ResultCode.SUCCESS.getCode());
         result.setMessage(ResultCode.SUCCESS.getMessage());
         result.setData(data);
+        result.setSuccess(true);
         return result;
     }
 
@@ -45,6 +51,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>();
         result.setCode(ResultCode.FAIL.getCode());
         result.setMessage(message);
+        result.setSuccess(false);
         return result;
     }
 
@@ -52,6 +59,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>();
         result.setCode(code);
         result.setMessage(message);
+        result.setSuccess(false);
         return result;
     }
 }

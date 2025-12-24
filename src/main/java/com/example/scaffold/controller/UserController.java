@@ -1,34 +1,56 @@
 package com.example.scaffold.controller;
 
 import com.example.scaffold.common.Result;
-import com.example.scaffold.model.dto.UserDTO;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.validation.annotation.Validated;
+import com.example.scaffold.model.User;
+import com.example.scaffold.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-
-@Tag(name = "用户管理", description = "用户相关的接口，包括用户CRUD、登录登出等")
-@Validated
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
-    @Operation(summary = "创建用户", description = "创建新用户")
-    @PostMapping
-    public Result<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO,
-                                     HttpServletRequest request) {
-        return Result.success(userDTO);
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/{id}")
+    public Result<User> getById(@PathVariable Long id) {
+        User user = userService.getById(id);
+        return Result.success(user);
     }
 
-    @Operation(summary = "更新用户", description = "更新用户信息")
-    @PutMapping("/{id}")
-    public Result<UserDTO> updateUser(@PathVariable @Min(value = 1, message = "用户ID必须大于0") Long id,
-                                     @Valid @RequestBody UserDTO userDTO,
-                                     HttpServletRequest request) {
+    @GetMapping("/list")
+    public Result<List<User>> list() {
+        return Result.success(userService.list());
+    }
 
-        return Result.success(userDTO);
+    @PostMapping("/save")
+    public Result<Boolean> save(@RequestBody User user) {
+        boolean saved = userService.save(user);
+        if (saved) {
+            return Result.success(true);
+        } else {
+            return Result.fail("保存失败");
+        }
+    }
+
+    @PutMapping("/update")
+    public Result<Boolean> update(@RequestBody User user) {
+        boolean updated = userService.updateById(user);
+        if (updated) {
+            return Result.success(true);
+        } else {
+            return Result.fail("更新失败");
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Result<Boolean> delete(@PathVariable Long id) {
+        boolean deleted = userService.removeById(id);
+        if (deleted) {
+            return Result.success(true);
+        } else {
+            return Result.fail("删除失败");
+        }
     }
 }

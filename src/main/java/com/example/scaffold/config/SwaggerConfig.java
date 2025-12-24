@@ -22,11 +22,11 @@ public class SwaggerConfig {
     static {
         // 为Result类添加泛型支持
         SpringDocUtils.getConfig().replaceWithSchema(Result.class, new Schema<Result>()
+                .addProperty("success", new Schema<Boolean>().type("boolean").example(true))
                 .addProperty("code", new Schema<Integer>().type("integer").example(200))
                 .addProperty("message", new Schema<String>().type("string").example("操作成功"))
-                .addProperty("timestamp", new Schema<Long>().type("integer").example(1640995200000L))
-                .addProperty("path", new Schema<String>().type("string").example("/api/test/health"))
-                .addProperty("requestId", new Schema<String>().type("string").example("550e8400-e29b-41d4-a716-446655440000")));
+                .addProperty("data", new Schema<Object>().type("object"))
+                .addProperty("timestamp", new Schema<Long>().type("integer").example(1640995200000L)));
 
         // 注册Java 8时间类型的schema
         SpringDocUtils.getConfig().replaceWithSchema(LocalDateTime.class, new Schema<LocalDateTime>()
