@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("asset")
@@ -85,5 +86,9 @@ public class Asset {
     @Schema(description = "记录日期", example = "2024-01-01")
     @TableField("recordDate")
     private Date recordDate;
+    
+    @Schema(description = "资产趋势数据", example = "[]")
+    @TableField(exist = false)
+    private List<AssetTrend> tend;
 }
 

@@ -45,8 +45,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("SpringBoot脚手架API文档")
-                        .description("SpringBoot脚手架项目接口文档")
+                        .title("HT-Financial-System API文档")
+                        .description("HT-Financial-System API文档")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("开发者")

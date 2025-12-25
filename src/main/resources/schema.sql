@@ -110,4 +110,15 @@ CREATE TABLE IF NOT EXISTS risk_drawdown(
     drawdown DOUBLE COMMENT '回撤百分比',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     INDEX idx_date3 (date)
+);
+
+-- 资产趋势表
+CREATE TABLE IF NOT EXISTS asset_trend(
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
+    asset_id BIGINT NOT NULL COMMENT '资产ID，关联asset表的id',
+    date DATE NOT NULL COMMENT '日期',
+    price DOUBLE COMMENT '价格',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_asset_id (asset_id),
+    INDEX idx_date4 (date)
 )

@@ -28,6 +28,11 @@ public class CorsConfig implements WebMvcConfigurer {
         // Swagger UI 资源
         registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springdoc-openapi-ui/");
+
+        // static静态资源
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/")
+                .resourceChain(true);
     }
 
     @Override
@@ -80,4 +85,5 @@ public class CorsConfig implements WebMvcConfigurer {
 
         return converter;
     }
+    
 }
