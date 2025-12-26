@@ -117,8 +117,6 @@
                                 </resource>
                             </resources>
                             <overwrite>true</overwrite>
-                            <!-- 如果目录不存在，不报错 -->
-                            <skipIfMissing>true</skipIfMissing>
                         </configuration>
                     </execution>
                 </executions>

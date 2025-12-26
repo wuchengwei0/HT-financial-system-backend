@@ -1,5 +1,11 @@
 ##########################RUN
 
+# 重新构建&启动
+cd docker
+docker-compose down
+docker-compose up -d
+
+
 # dockerfile 和 jar 放到同级目录上
 # 1. 在包含 Dockerfile 和 financial-backend.jar 的目录中执行
 docker build -t financial-backend:latest .
