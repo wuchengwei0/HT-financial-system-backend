@@ -152,8 +152,8 @@ public class AssetTrendDataGenerator implements ApplicationListener<ApplicationR
                         totalGenerated += allTrends.size();
                         allTrends.clear();
                         
-                        log.info("已处理 {}/{} 个asset，已生成 {} 条trend记录", 
-                            assetIdx + 1, assets.size(), totalGenerated);
+//                        log.info("已处理 {}/{} 个asset，已生成 {} 条trend记录", 
+//                            assetIdx + 1, assets.size(), totalGenerated);
                     }
                 }
 
