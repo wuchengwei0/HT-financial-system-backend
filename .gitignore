@@ -24,10 +24,10 @@ hs_err_pid*
 
 
 .cursor/
-.idea/
 .vscode/
 target/
 
 ./target/
 ./src/main/resources/static
 cp/
+/cp/
