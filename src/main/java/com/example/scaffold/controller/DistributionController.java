@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/distribution")
+@RequestMapping("/api/distribution")
 @Tag(name = "资产分布接口", description = "资产分布相关接口")
 public class DistributionController {
     

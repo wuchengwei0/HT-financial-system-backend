@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/dashboard")
+@RequestMapping("/api/dashboard")
 @Tag(name = "数据看板接口", description = "数据看板相关接口")
 public class DashboardController {
     

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/trend")
+@RequestMapping("/api/trend")
 @Tag(name = "趋势分析接口", description = "趋势分析相关接口")
 public class TrendController {
     

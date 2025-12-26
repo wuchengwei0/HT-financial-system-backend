@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/assets")
+@RequestMapping("/api/assets")
 @Tag(name = "资产列表接口", description = "资产列表相关接口")
 public class AssetController {
     @Autowired
@@ -126,12 +126,13 @@ public class AssetController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         
         // 写入CSV表头（排除tend字段）
-        writer.write("ID,资产代码,资产名称,当前价格,涨跌幅百分比,市值,所属行业,持仓数量,成本价,当日盈亏,总盈亏,持仓权重,市盈率,市净率,股息率,波动率,贝塔系数,夏普比率,最大回撤,记录日期\n");
+//        writer.write("ID,资产代码,资产名称,当前价格,涨跌幅百分比,市值,所属行业,持仓数量,成本价,当日盈亏,总盈亏,持仓权重,市盈率,市净率,股息率,波动率,贝塔系数,夏普比率,最大回撤,记录日期\n");
+        writer.write("资产代码,资产名称,当前价格,涨跌幅百分比,市值,所属行业,持仓数量,成本价,当日盈亏,总盈亏,持仓权重,市盈率,市净率,股息率,波动率,贝塔系数,夏普比率,最大回撤,记录日期\n");
         
         // 写入数据行
         for (Asset asset : assets) {
             String[] values = {
-                String.valueOf(asset.getId() != null ? asset.getId() : ""),
+//                String.valueOf(asset.getId() != null ? asset.getId() : ""),
                 escapeCsvValue(asset.getCode()),
                 escapeCsvValue(asset.getName()),
                 asset.getCurrentPrice() != null ? String.valueOf(asset.getCurrentPrice()) : "",

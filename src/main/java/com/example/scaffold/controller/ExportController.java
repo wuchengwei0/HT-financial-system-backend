@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/h2")
+@RequestMapping("/api/h2")
 public class ExportController {
     @Autowired
     private HutoolH2ExportUtil exportUtil;

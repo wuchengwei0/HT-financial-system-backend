@@ -1,13 +1,31 @@
 server:
-  port: 80
-  servlet:
-    context-path: /api
+  port: 8080
+#  servlet:
+#    context-path: /api
     
     
 import-xlsx:
   path: classpath:init.xlsx
 
 spring:
+  mvc:
+    # 关键配置：关闭后缀模式匹配
+    pathmatch:
+      use-suffix-pattern: false
+    # 关闭找不到处理器时抛出异常
+    throw-exception-if-no-handler-found: false
+  web:
+    resources:
+      # 静态资源位置
+      static-locations: classpath:/static/
+      # 添加映射
+      add-mappings: true
+      # 缓存配置
+      cache:
+        cachecontrol:
+          max-age: 365d
+          must-revalidate: false
+  
   application:
     name: scaffold-demo
   datasource:

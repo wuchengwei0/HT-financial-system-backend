@@ -19,6 +19,8 @@ docker rm -f financial-app
 # 删除指定镜像
 docker rmi financial-backend:latest
 
+#################V1
+
 
 ###########################################
 # Knife4j文档界面：http://localhost:8080/api/doc.html

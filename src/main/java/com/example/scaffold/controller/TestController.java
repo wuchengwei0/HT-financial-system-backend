@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Tag(name = "测试管理", description = "测试接口管理")
 @Validated
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api/test")
 public class TestController {
 
     @Operation(summary = "健康检查", description = "检查服务是否正常运行")

@@ -27,3 +27,6 @@ hs_err_pid*
 .idea/
 .vscode/
 target/
+
+./target/
+./src/main/resources/static

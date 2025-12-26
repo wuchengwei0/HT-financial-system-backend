@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/risk")
+@RequestMapping("/api/risk")
 @Tag(name = "风险管理接口", description = "风险管理相关接口")
 public class RiskController {
     
