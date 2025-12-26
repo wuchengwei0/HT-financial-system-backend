@@ -4,8 +4,8 @@ server:
 #    context-path: /api
     
     
-import-xlsx:
-  path: classpath:init.xlsx
+#import-xlsx:
+#  path: classpath:init.xlsx
 
 spring:
   mvc:
@@ -37,7 +37,7 @@ spring:
     init:
       mode: always
       schema-locations: classpath:schema.sql
-#      data-locations: classpath:data.sql
+      data-locations: classpath:data.sql
   h2:
     console:
       enabled: true

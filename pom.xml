@@ -131,6 +131,10 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <!-- 增加JVM内存参数 -->
+                    <jvmArguments>
+                        -Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
+                    </jvmArguments>
                 </configuration>
             </plugin>
         </plugins>

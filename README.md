@@ -78,6 +78,7 @@ src/main/resources/
 
 - JDK 11 或更高版本
 - Maven 3.6 或更高版本
+- Docker 和 Docker Compose（可选，用于容器化部署）
 
 ### 安装依赖
 
@@ -105,11 +106,188 @@ mvn clean package
 
 生成的可执行 JAR 文件位于 `target/financial-backend.jar`
 
-### 运行生产版本
+## 部署方式
+
+### 方式一：Docker 部署（推荐）
+
+Docker 部署是最简单和一致的部署方式，适合生产环境。
+
+#### 前置条件
+
+1. 确保已安装 Docker 和 Docker Compose
+2. 确保已构建 JAR 文件（`mvn clean package`）
+
+#### 部署步骤
+
+1. **构建 JAR 文件**
 
 ```bash
-java -jar target/financial-backend.jar
+mvn clean package
 ```
+
+2. **复制 JAR 文件到 Docker 目录**
+
+```bash
+# Windows
+copy target\financial-backend.jar docker\jar\financial-backend.jar
+
+# Linux/Mac
+cp target/financial-backend.jar docker/jar/financial-backend.jar
+```
+
+3. **启动 Docker 容器**
+
+```bash
+cd docker
+docker-compose up -d
+```
+
+4. **查看日志**
+
+```bash
+# 查看应用日志
+docker logs -f financial-app
+
+# 查看 Nginx 日志
+docker logs -f financial-nginx
+```
+
+5. **停止服务**
+
+```bash
+docker-compose down
+```
+
+#### Docker 配置说明
+
+- **应用服务** (`financial-app`): Spring Boot 应用，端口 8080
+- **Nginx 服务** (`financial-nginx`): 反向代理，端口 80
+- **JVM 内存配置**: 默认 `-Xms512m -Xmx2048m`，可在 `docker-compose.yml` 中修改
+
+#### 自定义 JVM 参数
+
+编辑 `docker/docker-compose.yml` 文件中的 `JAVA_OPTS` 环境变量：
+
+```yaml
+environment:
+  - JAVA_OPTS=-Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
+```
+
+#### 访问应用
+
+- **应用地址**: http://localhost:8080
+- **API 文档**: http://localhost:8080/api/doc.html
+- **H2 控制台**: http://localhost:8080/api/h2-console
+
+### 方式二：普通 JAR 启动
+
+适合本地开发或服务器直接部署。
+
+#### 前置条件
+
+1. 确保已安装 JDK 11 或更高版本
+2. 确保已构建 JAR 文件（`mvn clean package`）
+
+#### 启动步骤
+
+1. **构建 JAR 文件**
+
+```bash
+mvn clean package
+```
+
+2. **启动应用（Windows）**
+
+```bash
+# 使用默认内存配置
+java -jar target\financial-backend.jar
+
+# 或指定 JVM 内存参数
+java -Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -jar target\financial-backend.jar
+```
+
+3. **启动应用（Linux/Mac）**
+
+```bash
+# 使用默认内存配置
+java -jar target/financial-backend.jar
+
+# 或指定 JVM 内存参数
+java -Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -jar target/financial-backend.jar
+```
+
+4. **后台运行（Linux/Mac）**
+
+```bash
+# 使用 nohup 后台运行
+nohup java -Xms512m -Xmx2048m -jar target/financial-backend.jar > app.log 2>&1 &
+
+# 查看进程
+ps aux | grep financial-backend
+
+# 停止应用（使用进程ID）
+kill <PID>
+```
+
+#### 创建启动脚本（Linux/Mac）
+
+创建 `start.sh` 文件：
+
+```bash
+#!/bin/bash
+
+APP_HOME="$(cd "$(dirname "$0")" && pwd)"
+JAR="$APP_HOME/target/financial-backend.jar"
+
+# JVM 内存参数，可根据服务器内存调整
+JAVA_OPTS="-Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m"
+
+echo "Starting financial-backend with: $JAVA_OPTS"
+nohup java $JAVA_OPTS -jar "$JAR" > "$APP_HOME/app.log" 2>&1 &
+echo $! > "$APP_HOME/app.pid"
+echo "Started, PID: $(cat "$APP_HOME/app.pid")"
+```
+
+赋予执行权限并运行：
+
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+#### 创建启动脚本（Windows）
+
+创建 `start.bat` 文件：
+
+```batch
+@echo off
+set APP_HOME=%~dp0
+set JAR=%APP_HOME%target\financial-backend.jar
+set JAVA_OPTS=-Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
+
+echo Starting financial-backend with: %JAVA_OPTS%
+start "Financial Backend" java %JAVA_OPTS% -jar "%JAR%"
+```
+
+双击运行 `start.bat` 或在命令行执行：
+
+```cmd
+start.bat
+```
+
+#### 内存配置建议
+
+根据服务器内存大小调整 JVM 参数：
+
+- **内存 < 2GB**: `-Xms256m -Xmx1024m`
+- **内存 2-4GB**: `-Xms512m -Xmx2048m`（默认）
+- **内存 > 4GB**: `-Xms1024m -Xmx4096m`
+
+#### 访问应用
+
+- **应用地址**: http://localhost:8080
+- **API 文档**: http://localhost:8080/api/doc.html
+- **H2 控制台**: http://localhost:8080/api/h2-console
 
 ## 主要功能模块
 
@@ -172,7 +350,13 @@ java -jar target/financial-backend.jar
 
 ### 数据库初始化
 
-项目启动时会自动执行 `schema.sql` 创建表结构。如果需要初始化数据，可以取消注释 `application.yml` 中的 `data-locations` 配置。
+项目启动时会自动执行以下操作：
+
+1. **表结构初始化**: 自动执行 `schema.sql` 创建表结构
+2. **基础数据初始化**: 自动执行 `data.sql` 加载基础数据（用户数据、资产数据等）
+3. **资产趋势数据自动生成**: 启动完成后，`AssetTrendDataGenerator` 会自动为所有 `asset` 记录生成两年内的 `asset_trend` 数据
+
+> **注意**: `asset_trend` 数据不再存储在 `data.sql` 中，而是在应用启动后自动生成，以避免文件过大导致 OOM 错误。
 
 ## 配置说明
 

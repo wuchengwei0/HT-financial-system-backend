@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/assets")
@@ -54,6 +55,10 @@ public class AssetController {
             @RequestParam(required = false) String search,
             @Parameter(description = "行业筛选")
             @RequestParam(required = false) String industry,
+            @Parameter(description = "开始日期（格式：yyyy-MM-dd）", example = "2024-01-01")
+            @RequestParam(required = false) String dateFrom,
+            @Parameter(description = "结束日期（格式：yyyy-MM-dd）", example = "2024-12-31")
+            @RequestParam(required = false) String dateTo,
             @Parameter(description = "排序字段", example = "currentPrice")
             @RequestParam(defaultValue = "id") String sortBy,
             @Parameter(description = "排序方向", example = "desc")
@@ -68,6 +73,27 @@ public class AssetController {
         }
         if (industry != null && !industry.isEmpty()) {
             wrapper.eq("industry", industry);
+        }
+        // 日期范围过滤
+        if (dateFrom != null && !dateFrom.isEmpty()) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setLenient(false);
+                Date fromDate = dateFormat.parse(dateFrom);
+                wrapper.ge("recordDate", fromDate);
+            } catch (Exception e) {
+                // 日期格式不正确，忽略该参数
+            }
+        }
+        if (dateTo != null && !dateTo.isEmpty()) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setLenient(false);
+                Date toDate = dateFormat.parse(dateTo);
+                wrapper.le("recordDate", toDate);
+            } catch (Exception e) {
+                // 日期格式不正确，忽略该参数
+            }
         }
         if (sortOrder.equalsIgnoreCase("desc")) {
             wrapper.orderByDesc(sortBy);
