@@ -3,6 +3,7 @@
 # 重新构建&启动
 cd docker
 docker-compose down
+docker rmi financial-backend:latest 
 docker-compose up -d
 
 

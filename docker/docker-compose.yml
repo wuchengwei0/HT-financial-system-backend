@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  # Spring Boot 应用
+  financial-app:
+    build:
+      context: ./jar
+      dockerfile: dockerfile
+    image: financial-backend:latest
+    container_name: financial-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom
+    networks:
+      - financial-network
+    # healthcheck 已移除，因为JRE镜像可能不包含wget/curl工具
+    # 可以通过日志或端口监听来检查服务状态
+
+  # Nginx 反向代理
+  nginx:
+    image: nginx:alpine
+    container_name: financial-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - financial-app
+    networks:
+      - financial-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  financial-network:
+    driver: bridge
+
